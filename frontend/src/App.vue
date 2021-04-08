@@ -1,16 +1,22 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <TodoPage msg="Hello Vue 3 + TypeScript + Vite" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import TodoPage from './pages/TodoPage.vue'
+import AboutPage from './pages/AboutPage.vue'
+
+const routes = [
+  { path: '/', component: TodoPage },
+  { path: '/about', component: AboutPage },
+]
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    TodoPage,
+    AboutPage,
   }
 })
 </script>
