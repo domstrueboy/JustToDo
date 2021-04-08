@@ -1,17 +1,15 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 
-import TodoPage from './pages/TodoPage.vue'
-import AboutPage from './pages/AboutPage.vue'
+import List from './components/List.vue'
 
 const routes = [
-  { path: '/', component: TodoPage },
-  { path: '/about', component: AboutPage },
+  { path: '/:listId', component: List },
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 })
 

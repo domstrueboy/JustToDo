@@ -3,12 +3,13 @@
   <button @click="count++">
     count is: {{ count }}
   </button>
+  <p>{{ $route.params.listId }}</p>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
 export default defineComponent({
-  name: 'TodoPage',
+  name: 'List',
   props: {
     msg: {
       type: String,
