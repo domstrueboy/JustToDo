@@ -1,22 +1,33 @@
-export default {
-  state () {
-    return {
-      todos: {
-        todo1: {
-          title: 'Todo 1',
-          description: 'Desc 1',
-          items: [
-            {
-              title: 'Make this world the better place',
-              description: '',
-              done: false,
-              repeat: 'everyday',
-              createTime: 0,
-              editTime: 0,
-            }
-          ]
-        }
-      }
+import { ITodoItem, TodoItem, ITodoList, TodoList } from './models'
+
+interface ITodos {
+  [key: string]: TodoList;
+}
+
+interface IState {
+  currentList: string;
+  todos: ITodos;
+}
+
+const defaultState: IState = {
+  currentList: 'list1',
+  todos: {
+    list1: {
+      title: 'List 1',
+      description: '',
+      items: [],
     }
   }
+}
+
+export default {
+  state () {
+    return defaultState;
+  },
+  mutations: {
+    addTodo(state: IState, { title }: ITodoItem) {
+      const todoItem = new TodoItem({ title });
+      state.todos[state.currentList].items.push(todoItem);
+    }
+  },
 }
