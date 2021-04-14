@@ -2,7 +2,7 @@
   <h1>{{ todos }}</h1>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 
