@@ -1,15 +1,12 @@
 <template>
   <header>
-    <slot></slot>
+    <input type="text">
   </header>
 </template>
 
 <style scoped>
   header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    width: 100vw;
     height: 50px;
 
     display: flex;
