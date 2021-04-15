@@ -1,4 +1,9 @@
-import { ITodoItem, TodoItem, ITodoList, TodoList } from './models'
+import {
+  ITodoItem,
+  TodoItem,
+  // ITodoList,
+  TodoList,
+} from './models';
 
 interface ITodos {
   [key: string]: TodoList;
@@ -16,18 +21,18 @@ const defaultState: IState = {
       title: 'List 1',
       description: '',
       items: [],
-    }
-  }
-}
+    },
+  },
+};
 
 export default {
-  state () {
+  state() {
     return defaultState;
   },
   mutations: {
     addTodo(state: IState, { title }: ITodoItem) {
       const todoItem = new TodoItem({ title });
       state.todos[state.currentList].items.push(todoItem);
-    }
+    },
   },
-}
+};
