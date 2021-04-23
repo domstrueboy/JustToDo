@@ -1,5 +1,5 @@
-
-export type TRepeat = 'everyday' | 'weekdays' | 'weekends' | false
+/* eslint-disable max-classes-per-file */
+export type TRepeat = 'everyday' | 'weekdays' | 'weekends' | false;
 
 export interface ITodoItem {
   title: string;
@@ -12,10 +12,15 @@ export interface ITodoItem {
 
 export class TodoItem implements ITodoItem {
   title: string;
+
   description: string;
+
   done: boolean;
+
   repeat: TRepeat;
+
   createTime: number;
+
   editTime: number;
 
   constructor({ title, description }: Partial<ITodoItem>) {
@@ -25,7 +30,7 @@ export class TodoItem implements ITodoItem {
     this.repeat = false;
     this.createTime = Date.now();
     this.editTime = Date.now();
-  };
+  }
 }
 
 export interface ITodoList {
@@ -36,7 +41,9 @@ export interface ITodoList {
 
 export class TodoList implements ITodoList {
   title: string;
+
   description: string;
+
   items: TodoItem[];
 
   constructor({ title, description }: Partial<ITodoList>) {

@@ -26,11 +26,11 @@ const defaultState: IState = {
 };
 
 export default {
-  state() {
+  state(): IState {
     return defaultState;
   },
   mutations: {
-    addTodo(state: IState, { title }: ITodoItem) {
+    addTodo(state: IState, { title }: ITodoItem): void {
       const todoItem = new TodoItem({ title });
       state.todos[state.currentList].items.push(todoItem);
     },
