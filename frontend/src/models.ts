@@ -52,3 +52,9 @@ export class TodoList implements ITodoList {
     this.items = [];
   }
 }
+
+export interface ITab {
+  id: string;
+  title: string;
+  description?: string;
+}

@@ -1,8 +1,5 @@
 <template>
-  <FixedTop>
-    <Header />
-    <!-- <Nav /> -->
-  </FixedTop>
+  <Header />
   <RouterView />
 </template>
 
