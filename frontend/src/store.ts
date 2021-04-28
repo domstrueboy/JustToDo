@@ -1,22 +1,12 @@
 import {
   ITodoItem,
   TodoItem,
-  ITodoList,
+  IState,
   ITab,
-  // TodoList,
 } from './models';
 
-interface ILists {
-  [key: string]: ITodoList;
-}
-
-interface IState {
-  currentList: string;
-  lists: ILists;
-}
-
 const defaultState: IState = {
-  currentList: 'list1',
+  currentListId: 'list1',
   lists: {
     list1: {
       title: 'List 1',
@@ -56,7 +46,10 @@ export default {
   mutations: {
     addTodo(state: IState, { title }: ITodoItem): void {
       const todoItem = new TodoItem({ title });
-      state.lists[state.currentList].items.push(todoItem);
+      state.lists[state.currentListId].items.push(todoItem);
+    },
+    setCurrentListId(state: IState, id: string): void {
+      state.currentListId = id;
     },
   },
 };

@@ -58,3 +58,12 @@ export interface ITab {
   title: string;
   description?: string;
 }
+
+export interface ILists {
+  [key: string]: ITodoList;
+}
+
+export interface IState {
+  currentListId: string;
+  lists: ILists;
+}

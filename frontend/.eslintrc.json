@@ -25,7 +25,17 @@
     "vue",
     "@typescript-eslint"
   ],
-  "rules": {
-  },
-  "settings": {}
+  "overrides": [
+    {
+      "files": ["./src/store.ts"],
+      "rules": {
+        "no-param-reassign": ["error", {
+          "props": true,
+          "ignorePropertyModificationsFor": [
+            "state" // for vuex mutations
+          ]
+        }]
+      }
+    }
+  ]
 }

@@ -1,25 +1,33 @@
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="count++">
+  <h1>{{ list.title }}</h1>
+  <!-- <button @click="count++">
     count is: {{ count }}
-  </button>
-  <p>{{ $route.params.listId }}</p>
+  </button> -->
+  <p>{{ $route.params.listId ?? 'Default list' }}</p>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue';
+import { /* ref, */ defineComponent, computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'List',
   props: {
-    msg: {
-      type: String,
-      required: true,
-    },
+    // msg: {
+    //   type: String,
+    //   required: true,
+    // },
   },
-  setup: () => {
-    const count = ref(0);
-    return { count };
+  // setup: () => {
+  //   const count = ref(0);
+  //   return { count };
+  // },
+  setup() {
+    const store = useStore();
+
+    return {
+      list: computed(() => store.state.lists[store.state.currentList]),
+    };
   },
 });
 </script>
