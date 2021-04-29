@@ -1,27 +1,17 @@
 <template>
   <h1>{{ list.title }}</h1>
-  <!-- <button @click="count++">
-    count is: {{ count }}
-  </button> -->
-  <p>{{ $route.params.listId ?? 'Default list' }}</p>
 </template>
 
 <script lang="ts">
-import { /* ref, */ defineComponent, computed } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent, computed } from 'vue';
+import { useStore, mapMutations } from 'vuex';
 
 export default defineComponent({
   name: 'List',
-  props: {
-    // msg: {
-    //   type: String,
-    //   required: true,
-    // },
+  beforeRouteEnter(to) {
+    console.log(to);
+    this.setCurrentListId(this.store.state.currentList);
   },
-  // setup: () => {
-  //   const count = ref(0);
-  //   return { count };
-  // },
   setup() {
     const store = useStore();
 
@@ -29,23 +19,12 @@ export default defineComponent({
       list: computed(() => store.state.lists[store.state.currentList]),
     };
   },
+  methods: {
+    ...mapMutations(['setCurrentListId']),
+  },
 });
 </script>
 
 <style scoped>
-a {
-  color: #42b983;
-}
 
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
-}
-
-code {
-  background-color: #eee;
-  padding: 2px 4px;
-  border-radius: 4px;
-  color: #304455;
-}
 </style>
