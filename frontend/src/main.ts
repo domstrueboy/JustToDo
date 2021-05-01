@@ -9,6 +9,10 @@ interface IPath {
   path: string;
 }
 
+interface ITo {
+  params: Record<string, string>;
+}
+
 const store = createStore(storeObj);
 
 const routes = [
@@ -22,9 +26,13 @@ const routes = [
   {
     path: '/list/:listId',
     component: List,
-    beforeEnter: (to: string): void | boolean => {
-      console.log(to);
-      // return false;
+    beforeEnter(to: ITo): IPath | boolean {
+      const id = to.params.listId;
+      if (!store.state.lists[id]) {
+        console.log(!store.state.lists[id]);
+        return false;
+      }
+      return { path: `/list/${store.state.currentListId}` };
     },
   },
 ];
