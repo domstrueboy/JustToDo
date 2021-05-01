@@ -33,7 +33,7 @@ const defaultState = {
 const rawStoredState = localStorage.getItem('state');
 const storedState = rawStoredState ? JSON.parse(rawStoredState) : {};
 
-export const initialState: IState = {
+const initialState: IState = {
   currentListId: storedState.currentListId ?? defaultState.currentListId,
   lists: storedState.lists ?? defaultState.lists,
 };
