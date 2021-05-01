@@ -8,10 +8,6 @@ import { useStore, mapMutations } from 'vuex';
 
 export default defineComponent({
   name: 'List',
-  beforeRouteEnter(to) {
-    console.log(to);
-    this.setCurrentListId(this.store.state.currentList);
-  },
   setup() {
     const store = useStore();
 

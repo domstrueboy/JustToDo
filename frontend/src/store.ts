@@ -5,7 +5,7 @@ import {
   ITab,
 } from './models';
 
-const defaultState: IState = {
+const defaultState = {
   currentListId: 'list1',
   lists: {
     list1: {
@@ -30,9 +30,17 @@ const defaultState: IState = {
   },
 };
 
+const rawStoredState = localStorage.getItem('state');
+const storedState = rawStoredState ? JSON.parse(rawStoredState) : {};
+
+export const initialState: IState = {
+  currentListId: storedState.currentListId ?? defaultState.currentListId,
+  lists: storedState.lists ?? defaultState.lists,
+};
+
 export default {
   state(): IState {
-    return defaultState;
+    return initialState;
   },
   getters: {
     tabs(state: IState): ITab[] {

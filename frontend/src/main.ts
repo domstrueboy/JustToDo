@@ -14,6 +14,6 @@ const router = createRouter({
 const store = createStore(storeObj);
 
 createApp(App)
-  .use(router)
   .use(store)
+  .use(router)
   .mount('#app');
