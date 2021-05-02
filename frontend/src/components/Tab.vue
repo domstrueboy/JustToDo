@@ -1,6 +1,6 @@
 <template>
   <li class="tab">
-    <RouterLink :to="`/${ tab.id }`">
+    <RouterLink :to="`/list/${ tab.id }`">
       {{ tab.title }}
     </RouterLink>
     <p>{{ tab.description }}</p>

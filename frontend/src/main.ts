@@ -15,24 +15,24 @@ const routes: RouteRecordRaw[] = [
       const id = store.state.currentListId;
       if (!store.state.lists[id]) { // @TODO move the same code into a function
         const firstId = Object.keys(store.state.lists)[0];
-        store.commit('setCurrentListId', store.state.lists[firstId]);
+        store.commit('setCurrentListId', firstId);
       }
-      return { path: `/list/${store.state.currentListId}` };
+      return { path: `/list/${id}` };
     },
   },
   {
     path: '/list/:listId',
     component: List,
-    beforeEnter(to) {
+    beforeEnter(to, _, next) {
       const paramsListId = typeof to.params.listId === 'string' ? to.params.listId : to.params.listId[0];
       const id = store.state.lists[paramsListId]
         ? paramsListId
         : store.state.currentListId;
       if (!store.state.lists[id]) { // @TODO move the same code into a function
         const firstId = Object.keys(store.state.lists)[0];
-        store.commit('setCurrentListId', store.state.lists[firstId]);
+        store.commit('setCurrentListId', firstId);
       }
-      return { path: `/list/${store.state.currentListId}` };
+      next();
     },
   },
 ];
