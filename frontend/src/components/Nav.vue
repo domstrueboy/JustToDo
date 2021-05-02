@@ -24,7 +24,7 @@ export default defineComponent({
     const store = useStore();
 
     return {
-      tabs: computed(() => store.getters.tabs),
+      tabs: computed(() => store.getters.getTabs),
     };
   },
 });

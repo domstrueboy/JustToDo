@@ -36,7 +36,7 @@ export class TodoItem implements ITodoItem {
 export interface ITodoList {
   title: string;
   description: string;
-  items: TodoItem[];
+  items: ITodoItem[];
 }
 
 export class TodoList implements ITodoList {
@@ -44,7 +44,7 @@ export class TodoList implements ITodoList {
 
   description: string;
 
-  items: TodoItem[];
+  items: ITodoItem[];
 
   constructor({ title, description }: Partial<ITodoList>) {
     this.title = title ?? 'Empty title';

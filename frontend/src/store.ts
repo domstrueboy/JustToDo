@@ -13,6 +13,7 @@ const defaultState = {
       description: 'List description 1',
       items: [
         {
+          id: 'todo1',
           title: 'Todo 1',
           description: 'Todo description 1',
           done: false,
@@ -43,13 +44,14 @@ export default {
     return initialState;
   },
   getters: {
-    tabs(state: IState): ITab[] {
+    getTabs(state: IState): ITab[] {
       return Object.keys(state.lists).map((key) => ({
         id: key,
         title: state.lists[key].title,
         description: state.lists[key].description,
       }));
     },
+
   },
   mutations: {
     addTodo(state: IState, { title }: ITodoItem): void {
