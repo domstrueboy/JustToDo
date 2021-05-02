@@ -1,36 +1,36 @@
 import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { createStore } from 'vuex';
 import storeObj from './store';
 import App from './App.vue';
 import List from './components/List.vue';
 
-interface IPath {
-  path: string;
-}
-
-interface ITo {
-  params: Record<string, string>;
-}
-
 const store = createStore(storeObj);
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: List,
-    redirect(): IPath {
+    redirect() {
+      const id = store.state.currentListId;
+      if (!store.state.lists[id]) { // @TODO move the same code into a function
+        const firstId = Object.keys(store.state.lists)[0];
+        store.commit('setCurrentListId', store.state.lists[firstId]);
+      }
       return { path: `/list/${store.state.currentListId}` };
     },
   },
   {
     path: '/list/:listId',
     component: List,
-    beforeEnter(to: ITo): IPath | boolean {
-      const id = to.params.listId;
-      if (!store.state.lists[id]) {
-        console.log(!store.state.lists[id]);
-        return false;
+    beforeEnter(to) {
+      const paramsListId = typeof to.params.listId === 'string' ? to.params.listId : to.params.listId[0];
+      const id = store.state.lists[paramsListId]
+        ? paramsListId
+        : store.state.currentListId;
+      if (!store.state.lists[id]) { // @TODO move the same code into a function
+        const firstId = Object.keys(store.state.lists)[0];
+        store.commit('setCurrentListId', store.state.lists[firstId]);
       }
       return { path: `/list/${store.state.currentListId}` };
     },
