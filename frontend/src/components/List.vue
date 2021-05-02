@@ -4,19 +4,15 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useStore, mapMutations } from 'vuex';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'List',
   setup() {
     const store = useStore();
-
     return {
-      list: computed(() => store.state.lists[store.state.currentList]),
+      list: computed(() => store.state.lists[store.state.currentListId]),
     };
-  },
-  methods: {
-    ...mapMutations(['setCurrentListId']),
   },
 });
 </script>
