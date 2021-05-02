@@ -9,6 +9,7 @@ const store = createStore(storeObj);
 
 const routes: RouteRecordRaw[] = [
   {
+    name: 'Main',
     path: '/',
     component: List,
     redirect() {
@@ -21,6 +22,7 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    name: 'List',
     path: '/list/:listId',
     component: List,
     beforeEnter(to, _, next) {
@@ -40,6 +42,12 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to) => {
+  if (to.name === 'List') {
+    store.commit('setCurrentListId', to.params.listId);
+  }
 });
 
 createApp(App)
