@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { createStore } from 'vuex';
-import storeObj from './store/index';
+import storeObj from './store/indexStore';
 import App from './App.vue';
 import List from './components/List.vue';
 

@@ -5,6 +5,9 @@ import {
   IState,
   ITab,
 } from '../models';
+import createLocalStoragePlugin from './plugins/localStoragePlugin';
+
+const localStoragePlugin = createLocalStoragePlugin();
 
 const defaultState = {
   currentListId: 'list1',
@@ -73,4 +76,5 @@ export default {
     },
     ...todoItemStore.mutations,
   },
+  plugins: [localStoragePlugin],
 };
