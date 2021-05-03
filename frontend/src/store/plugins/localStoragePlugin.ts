@@ -3,7 +3,7 @@ import { IState } from '../../models';
 
 interface IMutationObject {
   type: string;
-  payload: unknown;
+  payload: string;
 }
 
 export default function createLocalStoragePlugin() {
@@ -27,8 +27,16 @@ export default function createLocalStoragePlugin() {
     store.subscribe((mutation: IMutationObject, state: IState) => {
       // eslint-disable-next-line no-console
       console.log(mutation);
-      if (mutation.type === 'setCurrentListId') {
-        localStorage.setItem('currentListId', state.currentListId);
+      switch (mutation.type) {
+        case 'setCurrentListId':
+          localStorage.setItem('currentListId', mutation.payload);
+          break;
+        case 'toggleDone':
+          localStorage.setItem(`list_${state.currentListId}`, JSON.stringify(state.lists[state.currentListId]));
+          break;
+        default:
+          // eslint-disable-next-line no-console
+          console.log('unknown mutation');
       }
     });
   };
