@@ -4,10 +4,12 @@
       <h3 :class="item.done ? 'done' : ''">
         {{ item.title }}
       </h3>
-      <p>{{ item.description }}</p>
+      <p v-if="item.description">
+        {{ item.description }}
+      </p>
     </main>
     <label>
-      ✔️
+      <div>✔️</div>
       <input
         type="checkbox"
         @change="toggleDone"
@@ -46,12 +48,29 @@ export default defineComponent({
 <style scoped>
 li {
   display: flex;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+main {
+  margin-right: auto;
+}
+h3, p {
+  margin: 0;
+}
+p {
+  color: gray;
+}
+label {
+  cursor: pointer;
+}
+label:hover > div {
+  transform: scale(1.1);
 }
 input[type="checkbox"] {
   display: none;
 }
 .done {
   text-decoration: line-through;
-  color: gray;
+  color: lightgray;
 }
 </style>

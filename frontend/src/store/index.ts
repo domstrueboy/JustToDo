@@ -22,6 +22,15 @@ const defaultState = {
           createTime: 0,
           editTime: 0,
         },
+        {
+          id: 'todo2',
+          title: 'Todo 2',
+          description: '',
+          done: true,
+          repeat: false,
+          createTime: 0,
+          editTime: 0,
+        },
       ],
     },
     list2: {
