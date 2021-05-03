@@ -2,6 +2,7 @@
 export type TRepeat = 'everyday' | 'weekdays' | 'weekends' | false;
 
 export interface ITodoItem {
+  id: string;
   title: string;
   description: string;
   done: boolean;
@@ -11,6 +12,8 @@ export interface ITodoItem {
 }
 
 export class TodoItem implements ITodoItem {
+  id: string;
+
   title: string;
 
   description: string;
@@ -24,6 +27,7 @@ export class TodoItem implements ITodoItem {
   editTime: number;
 
   constructor({ title, description }: Partial<ITodoItem>) {
+    this.id = `id${Date.now()}`;
     this.title = title ?? 'Empty title';
     this.description = description ?? '';
     this.done = false;

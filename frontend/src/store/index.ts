@@ -1,9 +1,10 @@
+import todoItemStore from './todoItemStore';
 import {
   ITodoItem,
   TodoItem,
   IState,
   ITab,
-} from './models';
+} from '../models';
 
 const defaultState = {
   currentListId: 'list1',
@@ -51,7 +52,6 @@ export default {
         description: state.lists[key].description,
       }));
     },
-
   },
   mutations: {
     addTodo(state: IState, { title }: ITodoItem): void {
@@ -59,7 +59,9 @@ export default {
       state.lists[state.currentListId].items.push(todoItem);
     },
     setCurrentListId(state: IState, id: string): void {
+      // eslint-disable-next-line no-param-reassign
       state.currentListId = id;
     },
+    ...todoItemStore.mutations,
   },
 };

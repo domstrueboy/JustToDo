@@ -30,5 +30,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+ul {
+  list-style-type: none;
+}
 </style>
