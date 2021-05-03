@@ -37,11 +37,6 @@ export default defineComponent({
       toggleDone: () => store.commit('toggleDone', props.item.id),
     };
   },
-  data() {
-    return {
-      done: this.item.done,
-    };
-  },
 });
 </script>
 

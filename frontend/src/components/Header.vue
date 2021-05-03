@@ -1,17 +1,19 @@
 <template>
   <header>
-    <input type="text">
+    <Input />
     <Nav />
   </header>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Input from './Input.vue';
 import Nav from './Nav.vue';
 
 export default defineComponent({
   name: 'Header',
   components: {
+    Input,
     Nav,
   },
 });

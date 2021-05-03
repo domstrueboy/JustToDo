@@ -31,6 +31,7 @@ export default function createLocalStoragePlugin() {
         case 'setCurrentListId':
           localStorage.setItem('currentListId', mutation.payload);
           break;
+        case 'addTodoItem':
         case 'toggleDone':
           localStorage.setItem(`list_${state.currentListId}`, JSON.stringify(state.lists[state.currentListId]));
           break;

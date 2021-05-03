@@ -1,7 +1,6 @@
 import todoItemStore from './todoItemStore';
+import listStore from './listStore';
 import {
-  ITodoItem,
-  TodoItem,
   ITodoList,
   IState,
   ITab,
@@ -67,10 +66,6 @@ export default {
     },
   },
   mutations: {
-    addTodo(state: IState, { title }: ITodoItem): void {
-      const todoItem = new TodoItem({ title });
-      state.lists[state.currentListId].items.push(todoItem);
-    },
     setCurrentListId(state: IState, id: string): void {
       // eslint-disable-next-line no-param-reassign
       state.currentListId = id;
@@ -79,6 +74,7 @@ export default {
       // eslint-disable-next-line no-param-reassign
       state.lists[id] = list;
     },
+    ...listStore.mutations,
     ...todoItemStore.mutations,
   },
   plugins: [localStoragePlugin],
