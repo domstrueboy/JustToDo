@@ -2,6 +2,7 @@ import todoItemStore from './todoItemStore';
 import {
   ITodoItem,
   TodoItem,
+  ITodoList,
   IState,
   ITab,
 } from '../models';
@@ -73,6 +74,10 @@ export default {
     setCurrentListId(state: IState, id: string): void {
       // eslint-disable-next-line no-param-reassign
       state.currentListId = id;
+    },
+    setList(state: IState, { id, list }: { id: string, list: ITodoList }): void {
+      // eslint-disable-next-line no-param-reassign
+      state.lists[id] = list;
     },
     ...todoItemStore.mutations,
   },
