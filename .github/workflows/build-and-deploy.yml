@@ -16,6 +16,7 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
     - name: npm install, and build
       run: |
+        cd frontend
         npm install
         npm run build
     - name: GitHub Pages Deploy
@@ -23,4 +24,4 @@ jobs:
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: public   # The folder the action should deploy.
+        FOLDER: frontend/dist   # The folder the action should deploy.
