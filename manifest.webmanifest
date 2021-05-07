@@ -1,0 +1,14 @@
+{
+  "name": "Simple TODO",
+  "short_name": "TODO",
+  "start_url": "https://domstrueboy.github.io/js-experiments/simple-to-do/",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color":"#ffffff",
+  "icons": [
+    {
+      "src": "simple-to-do-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }]
+}
