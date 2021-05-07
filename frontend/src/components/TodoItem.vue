@@ -1,7 +1,10 @@
 <template>
   <li>
     <main>
-      <h3 :class="item.done ? 'done' : ''">
+      <h3
+        :class="item.done ? 'done' : ''"
+        contenteditable
+      >
         {{ item.title }}
       </h3>
       <p v-if="item.description">
