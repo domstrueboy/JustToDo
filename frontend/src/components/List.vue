@@ -7,6 +7,7 @@
         v-for="item in list.items"
         :key="item.id"
         :item="item"
+        @remove-todo-item="onRemoveTodoItem(item.id)"
       />
     </ul>
   </main>
@@ -26,6 +27,9 @@ export default defineComponent({
     const store = useStore();
     return {
       list: computed(() => store.state.lists[store.state.currentListId]),
+      onRemoveTodoItem: (id: string) => {
+        store.commit('removeTodoItem', { id });
+      },
     };
   },
 });

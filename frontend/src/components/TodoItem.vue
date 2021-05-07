@@ -15,6 +15,9 @@
         @change="toggleDone"
       >
     </label>
+    <button @click="$emit('remove-todo-item')">
+      ❌
+    </button>
   </li>
 </template>
 
@@ -31,6 +34,7 @@ export default defineComponent({
       default: new TodoItem({}),
     },
   },
+  emits: ['remove-todo-item'],
   setup(props) {
     const store = useStore();
     return {

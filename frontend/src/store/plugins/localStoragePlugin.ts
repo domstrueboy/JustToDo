@@ -33,6 +33,7 @@ export default function createLocalStoragePlugin() {
           break;
         case 'addTodoItem':
         case 'toggleDone':
+        case 'removeTodoItem':
           localStorage.setItem(`list_${state.currentListId}`, JSON.stringify(state.lists[state.currentListId]));
           break;
         default:
