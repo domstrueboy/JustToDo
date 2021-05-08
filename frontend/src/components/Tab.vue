@@ -1,9 +1,14 @@
 <template>
-  <li class="tab">
-    <RouterLink :to="`/list/${ tab.id }`">
+  <li
+    class="tab"
+    :title="tab.description"
+  >
+    <RouterLink
+      :to="`/list/${ tab.id }`"
+      class="tab__link"
+    >
       {{ tab.title }}
     </RouterLink>
-    <p>{{ tab.description }}</p>
   </li>
 </template>
 
@@ -24,6 +29,23 @@ export default defineComponent({
 
 <style scoped>
 .tab {
-  background-color: whitesmoke;
+  margin-right: 10px;
+}
+.tab__link {
+  text-decoration: none;
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  border-radius: 20px;
+  color: white;
+  background-color: pink;
+  transition: .3s;
+}
+.tab__link:visited {
+  color: white;
+}
+.router-link-active {
+  background-color: red;
 }
 </style>

@@ -34,7 +34,8 @@ export default defineComponent({
   ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     display: flex;
+    justify-content: space-around;
   }
 </style>
