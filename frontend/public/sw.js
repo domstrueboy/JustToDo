@@ -3,9 +3,11 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open('sw-cache').then((cache) => cache.addAll([
       '/JustToDo/',
-      '/JustToDo/css/style.css',
-      '/JustToDo/js/main.js',
       '/JustToDo/index.html',
+      '/JustToDo/assets/',
+      '/JustToDo/assets/index.*.css',
+      '/JustToDo/assets/index.*.js',
+      '/JustToDo/assets/vendor.*.js',
     ])),
   );
 });
