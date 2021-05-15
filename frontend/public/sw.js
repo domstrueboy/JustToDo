@@ -5,9 +5,9 @@ self.addEventListener('install', (event) => {
       '/JustToDo/',
       '/JustToDo/index.html',
       '/JustToDo/assets/',
-      '/JustToDo/assets/index.*.css',
-      '/JustToDo/assets/index.*.js',
-      '/JustToDo/assets/vendor.*.js',
+      // '/JustToDo/assets/index.*.css',
+      // '/JustToDo/assets/index.*.js',
+      // '/JustToDo/assets/vendor.*.js',
     ])),
   );
 });
