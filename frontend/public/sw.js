@@ -4,7 +4,7 @@ self.addEventListener('install', (event) => {
     caches.open('sw-cache').then((cache) => cache.addAll([
       '/JustToDo/',
       '/JustToDo/index.html',
-      '/JustToDo/assets/',
+      // '/JustToDo/assets/',
       // '/JustToDo/assets/index.*.css',
       // '/JustToDo/assets/index.*.js',
       // '/JustToDo/assets/vendor.*.js',
