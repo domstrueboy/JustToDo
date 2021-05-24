@@ -36,18 +36,16 @@ input {
   width: 100%;
   height: 40px;
   box-sizing: border-box;
-  border-radius: 20px;
   border: 0;
   background-color: whitesmoke;
   outline: none;
   padding: 0 20px;
 }
 button {
-  border-radius: 20px;
   min-width: 40px;
   border: 0;
   background-color: red;
   color: white;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 </style>

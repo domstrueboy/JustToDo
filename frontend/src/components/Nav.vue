@@ -34,8 +34,10 @@ export default defineComponent({
   ul {
     list-style-type: none;
     margin: 0;
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
-    justify-content: space-around;
+  }
+  ul > *:not(:first-child) {
+    margin-left: 10px;
   }
 </style>

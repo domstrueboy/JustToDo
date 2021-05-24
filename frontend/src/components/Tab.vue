@@ -28,16 +28,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.tab {
-  margin-right: 10px;
-}
 .tab__link {
   text-decoration: none;
   display: block;
   height: 40px;
   line-height: 40px;
   padding: 0 20px;
-  border-radius: 20px;
   color: white;
   background-color: pink;
   transition: .3s;

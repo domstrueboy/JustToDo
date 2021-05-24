@@ -1,7 +1,7 @@
 <template>
   <header>
-    <Nav />
     <Input />
+    <Nav />
   </header>
 </template>
 
@@ -24,5 +24,6 @@ export default defineComponent({
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 10px;
   }
 </style>
