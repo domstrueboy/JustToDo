@@ -50,14 +50,20 @@ export default defineComponent({
     const store = useStore();
     return {
       toggleDone: () => store.commit('toggleDone', props.item.id),
-      onTitleChange: ({ target }: { target: HTMLElement }) => store.commit('editTitle', {
-        id: props.item.id,
-        newTitle: target.innerText as CommitOptions,
-      }),
-      onDescriptionChange: ({ target }: { target: HTMLElement }) => store.commit('editDescription', {
-        id: props.item.id,
-        newDesc: target.innerText as CommitOptions,
-      }),
+      onTitleChange: (event: KeyboardEvent) => {
+        const target = event?.target as HTMLElement;
+        store.commit('editTitle', {
+          id: props.item.id,
+          newTitle: target.innerText as CommitOptions,
+        });
+      },
+      onDescriptionChange: (event: KeyboardEvent) => {
+        const target = event?.target as HTMLElement;
+        store.commit('editDescription', {
+          id: props.item.id,
+          newDesc: target.innerText as CommitOptions,
+        });
+      },
     };
   },
 });
