@@ -1,16 +1,15 @@
 <template>
   <li>
-    <main>
+    <main :class="item.done ? 'done' : ''">
       <h3
-        :class="item.done ? 'done' : ''"
-        contenteditable
+        :contenteditable="!item.done"
         @keydown.enter.prevent="onTitleChange"
       >
         {{ item.title }}
       </h3>
       <p
         v-if="item.description"
-        contenteditable
+        :contenteditable="!item.done"
         @keydown.enter.prevent="onDescriptionChange"
       >
         {{ item.description }}
@@ -93,7 +92,7 @@ label {
 input[type="checkbox"] {
   display: none;
 }
-.done {
+.done > h3, p {
   text-decoration: line-through;
   color: lightgray;
 }

@@ -24,6 +24,6 @@ export default defineComponent({
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding-top: 10px;
   }
 </style>

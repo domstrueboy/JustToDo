@@ -1,7 +1,8 @@
 <template>
   <main>
-    <h1>{{ list.title }}</h1>
-    <p>{{ list.description ?? 'NO' }}</p>
+    <p v-if="list.description">
+      {{ list.description }}
+    </p>
     <ul>
       <TodoItem
         v-for="item in list.items"
@@ -38,6 +39,10 @@ export default defineComponent({
 <style scoped>
 main {
   width: 100%;
+}
+p {
+  margin-top: 0;
+  margin-bottom: 30px;
 }
 ul {
   list-style-type: none;
