@@ -35,13 +35,14 @@ export default defineComponent({
   line-height: 40px;
   padding: 0 20px;
   color: white;
-  background-color: pink;
+  background: var(--main-bg);
+  opacity: .3;
   transition: .3s;
 }
 .tab__link:visited {
   color: white;
 }
 .router-link-active {
-  background-color: red;
+  opacity: 1;
 }
 </style>

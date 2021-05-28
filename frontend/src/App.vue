@@ -17,6 +17,9 @@ export default defineComponent({
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+:root {
+  --main-bg: linear-gradient(to top right, deeppink, darkviolet);
+}
 body {
   margin: 0;
 }

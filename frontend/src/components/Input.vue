@@ -44,7 +44,7 @@ input {
 button {
   min-width: 40px;
   border: 0;
-  background-color: red;
+  background: var(--main-bg);
   color: white;
   margin-left: 10px;
 }
