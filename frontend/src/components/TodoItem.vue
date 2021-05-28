@@ -1,5 +1,6 @@
 <template>
   <li>
+    <div class="handler">⚬⚬⚬</div>
     <main :class="item.done ? 'done' : ''">
       <h3
         :contenteditable="!item.done"
@@ -69,9 +70,27 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.handler {
+  position: absolute;
+  height: 40px;
+  line-height: 40px;
+  width: 40px;
+  left: -40px;
+  text-align: center;
+  user-select: none;
+  opacity: 0;
+  cursor: grab;
+}
+.handler:hover {
+  opacity: 1;
+}
+.handler:active {
+  cursor: grabbing;
+}
 li {
   display: flex;
   border-top: 1px solid whitesmoke;
+  position: relative;
 }
 main {
   margin-right: auto;
@@ -104,6 +123,7 @@ input[type="checkbox"] {
   height: 40px;
   line-height: 40px;
   text-align: center;
+  user-select: none;
 }
 .action-button:hover {
   background-color: whitesmoke;
