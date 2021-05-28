@@ -4,7 +4,7 @@
       v-model="input"
       type="text"
     >
-    <button>➕</button>
+    <button>➜</button>
   </form>
 </template>
 

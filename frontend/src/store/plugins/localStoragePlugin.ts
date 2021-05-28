@@ -36,6 +36,7 @@ export default function createLocalStoragePlugin() {
         case 'removeTodoItem':
         case 'editTitle':
         case 'editDescription':
+        case 'editListDescription':
           localStorage.setItem(`list_${state.currentListId}`, JSON.stringify(state.lists[state.currentListId]));
           break;
         default:

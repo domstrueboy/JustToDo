@@ -1,6 +1,10 @@
 <template>
   <main>
-    <p v-if="list.description">
+    <p
+      v-if="list.description"
+      contenteditable
+      @keydown.enter.prevent="onDescriptionChange"
+    >
       {{ list.description }}
     </p>
     <ul>
@@ -31,6 +35,10 @@ export default defineComponent({
       onRemoveTodoItem: (id: string) => {
         store.commit('removeTodoItem', { id });
       },
+      onDescriptionChange: (event: KeyboardEvent) => {
+        const target = event?.target as HTMLElement;
+        store.commit('editListDescription', target.innerText);
+      },
     };
   },
 });
@@ -43,6 +51,7 @@ main {
 p {
   margin-top: 0;
   margin-bottom: 30px;
+  outline: none;
 }
 ul {
   list-style-type: none;

@@ -11,5 +11,9 @@ export default {
       const index = items.findIndex((item) => item.id === id);
       items.splice(index, 1);
     },
+    editListDescription(state: IState, newDesc: string): void {
+      const foundItem = state.lists[state.currentListId];
+      if (foundItem) foundItem.description = newDesc;
+    },
   },
 };
