@@ -1,6 +1,17 @@
 <template>
-  <li>
-    <div class="handler">⚬⚬⚬</div>
+  <li
+    :draggable="draggable"
+    @dragstart="onDrag"
+    @dragover.prevent="() => {}"
+    @drop.prevent="onDrop"
+  >
+    <div
+      class="handler"
+      @mouseover="draggable = true"
+      @mouseleave="draggable = false"
+    >
+      ⚬⚬⚬
+    </div>
     <main :class="item.done ? 'done' : ''">
       <h3
         :contenteditable="!item.done"
@@ -64,8 +75,21 @@ export default defineComponent({
           newDesc: target.innerText as CommitOptions,
         });
       },
+      onDrag: (e) => {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('id', props.item.id);
+      },
+      onDrop: (e) => {
+        e.dataTransfer.dropEffect = 'move';
+        const { id } = props.item;
+        const afterId = e.dataTransfer.getData('id');
+        store.commit('moveTodoItemAfter', { id, afterId });
+      },
     };
   },
+  data: () => ({
+    draggable: false,
+  }),
 });
 </script>
 

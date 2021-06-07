@@ -34,6 +34,7 @@ export default function createLocalStoragePlugin() {
         case 'addTodoItem':
         case 'toggleDone':
         case 'removeTodoItem':
+        case 'moveTodoItemAfter':
         case 'editTitle':
         case 'editDescription':
         case 'editListDescription':
