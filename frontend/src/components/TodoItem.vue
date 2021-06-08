@@ -75,14 +75,16 @@ export default defineComponent({
           newDesc: target.innerText as CommitOptions,
         });
       },
-      onDrag: (e) => {
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('id', props.item.id);
+      onDrag: (event: DragEvent) => {
+        if (!event.dataTransfer) return;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('id', props.item.id);
       },
-      onDrop: (e) => {
-        e.dataTransfer.dropEffect = 'move';
+      onDrop: (event: DragEvent) => {
+        if (!event.dataTransfer) return;
+        event.dataTransfer.dropEffect = 'move';
         const { id } = props.item;
-        const afterId = e.dataTransfer.getData('id');
+        const afterId = event.dataTransfer.getData('id');
         store.commit('moveTodoItemAfter', { id, afterId });
       },
     };
