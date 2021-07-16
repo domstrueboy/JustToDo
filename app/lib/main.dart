@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'services.dart';
-
-import './models/note.dart';
+import 'models/item.dart';
 
 void main() => runApp(const App());
 
@@ -11,24 +10,27 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Services(
-        child: MaterialApp(
-      title: 'Just',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
+      child: MaterialApp(
+        title: 'Just',
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.blue,
+        ),
+        home: Builder(
+          builder: (context) {
+            return FutureBuilder<bool>(
+              future: Services.of(context).authService.recoverSession(),
+              builder: (context, snapshot) {
+                final sessionRecovered = snapshot.data ?? false;
+                return sessionRecovered
+                    ? const NotesPage()
+                    : const HomePage(title: 'Just');
+              },
+            );
+          },
+        ),
       ),
-      home: Builder(
-        builder: (context) {
-          return FutureBuilder<bool>(
-            future: Services.of(context).authService.recoverSession(),
-            builder: (context, snapshot) {
-              final sessionRecovered = snapshot.data ?? false;
-              return sessionRecovered ? NotesPage() : HomePage(title: 'Just');
-            },
-          );
-        },
-      ),
-    ));
+    );
   }
 }
 
@@ -63,10 +65,13 @@ class _HomePageState extends State<HomePage> {
   Future<void> _handleResponse(bool success) async {
     if (success) {
       await Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => NotesPage()));
+          context, MaterialPageRoute(builder: (_) => const NotesPage()));
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Something went wrong.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong.'),
+        ),
+      );
     }
   }
 
@@ -75,7 +80,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Just'),
+        title: const Text('Just'),
       ),
       body: Center(
         child: Column(
@@ -86,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               child: TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(hintText: 'Email'),
+                decoration: const InputDecoration(hintText: 'Email'),
               ),
             ),
             Padding(
@@ -94,18 +99,18 @@ class _HomePageState extends State<HomePage> {
               child: TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(hintText: 'Password'),
+                decoration: const InputDecoration(hintText: 'Password'),
               ),
             ),
             ElevatedButton.icon(
               onPressed: _signIn,
-              icon: Icon(Icons.login),
-              label: Text('Sign in'),
+              icon: const Icon(Icons.login),
+              label: const Text('Sign in'),
             ),
             ElevatedButton.icon(
               onPressed: _signUp,
-              icon: Icon(Icons.app_registration),
-              label: Text('Sign up'),
+              icon: const Icon(Icons.app_registration),
+              label: const Text('Sign up'),
             ),
           ],
         ),
@@ -141,17 +146,17 @@ class _NotesPageState extends State<NotesPage> {
   }
 
   Future<void> _addNote() async {
-    final note = await Navigator.push<Note?>(
+    final note = await Navigator.push<Item?>(
       context,
-      MaterialPageRoute(builder: (context) => NotePage()),
+      MaterialPageRoute(builder: (context) => const NotePage()),
     );
     if (note != null) {
       setState(() {});
     }
   }
 
-  Future<void> _editNote(Note note) async {
-    final updatedNote = await Navigator.push<Note?>(
+  Future<void> _editNote(Item note) async {
+    final updatedNote = await Navigator.push<Item?>(
       context,
       MaterialPageRoute(builder: (context) => NotePage(note: note)),
     );
@@ -160,7 +165,7 @@ class _NotesPageState extends State<NotesPage> {
     }
   }
 
-  Widget _toNoteWidget(Note note) {
+  Widget _toNoteWidget(Item note) {
     return Dismissible(
       key: ValueKey(note.id),
       direction: DismissDirection.endToStart,
@@ -171,7 +176,7 @@ class _NotesPageState extends State<NotesPage> {
         padding: const EdgeInsets.all(16.0),
         color: Theme.of(context).errorColor,
         alignment: Alignment.centerRight,
-        child: Icon(Icons.delete),
+        child: const Icon(Icons.delete),
       ),
       child: ListTile(
         title: Text(note.title),
@@ -190,7 +195,7 @@ class _NotesPageState extends State<NotesPage> {
       ),
       body: ListView(
         children: [
-          FutureBuilder<List<Note>>(
+          FutureBuilder<List<Item>>(
             future: Services.of(context).notesService.getNotes(),
             builder: (context, snapshot) {
               final notes = (snapshot.data ?? [])
@@ -220,7 +225,7 @@ class _NotesPageState extends State<NotesPage> {
 }
 
 class NotePage extends StatefulWidget {
-  final Note? note;
+  final Item? note;
 
   const NotePage({this.note});
 
@@ -231,20 +236,6 @@ class NotePage extends StatefulWidget {
 class _NotePageState extends State<NotePage> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
-
-  Future<void> _saveNote_() async {
-    if (_titleController.text.isEmpty) {
-      _showSnackBar('Title cannot be empty.');
-    }
-    final note = await Services.of(context)
-        .notesService
-        .createNote(_titleController.text, _contentController.text);
-    if (note != null) {
-      Navigator.pop(context, note);
-    } else {
-      _showSnackBar('Something went wrong.');
-    }
-  }
 
   void _showSnackBar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
@@ -262,22 +253,22 @@ class _NotePageState extends State<NotePage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _titleController,
-              decoration: InputDecoration(hintText: 'Title'),
+              decoration: const InputDecoration(hintText: 'Title'),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _contentController,
-              decoration: InputDecoration(hintText: 'Content'),
+              decoration: const InputDecoration(hintText: 'Content'),
             ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _saveNote,
-        icon: Icon(Icons.save),
-        label: Text('Save'),
+        icon: const Icon(Icons.save),
+        label: const Text('Save'),
       ),
     );
   }
@@ -306,7 +297,7 @@ class _NotePageState extends State<NotePage> {
     }
   }
 
-  Future<Note?> _createOrUpdateNote(String title, String content) {
+  Future<Item?> _createOrUpdateNote(String title, String content) {
     final notesService = Services.of(context).notesService;
     if (widget.note != null) {
       return notesService.updateNote(widget.note!.id, title, content);

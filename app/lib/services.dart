@@ -1,23 +1,20 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase/supabase.dart';
-
-import 'keys.dart';
-
-import './models/note.dart';
+import 'constants.dart';
+import 'models/item.dart';
 
 class NotesService {
-  static const notes = 'notes';
+  static const items = MAIN_TABLE_NAME;
 
   final SupabaseClient _client;
 
   NotesService(this._client);
 
-  Future<List<Note>> getNotes() async {
+  Future<List<Item>> getNotes() async {
     final response = await _client
-        .from(notes)
+        .from(items)
         .select('id, title, content, create_time, modify_time')
         .execute();
     if (response.error == null) {
@@ -28,9 +25,9 @@ class NotesService {
     return [];
   }
 
-  Future<Note?> createNote(String title, String? content) async {
+  Future<Item?> createNote(String title, String? content) async {
     final response = await _client
-        .from(notes)
+        .from(items)
         .insert({'title': title, 'content': content}).execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
@@ -40,9 +37,9 @@ class NotesService {
     return null;
   }
 
-  Future<Note?> updateNote(int id, String title, String? content) async {
+  Future<Item?> updateNote(int id, String title, String? content) async {
     final response = await _client
-        .from(notes)
+        .from(items)
         .update({'title': title, 'content': content, 'modify_time': 'now()'})
         .eq('id', id)
         .execute();
@@ -55,7 +52,7 @@ class NotesService {
   }
 
   Future<bool> deleteNote(int id) async {
-    final response = await _client.from(notes).delete().eq('id', id).execute();
+    final response = await _client.from(items).delete().eq('id', id).execute();
     if (response.error == null) {
       return true;
     }
@@ -63,8 +60,8 @@ class NotesService {
     return false;
   }
 
-  Note toNote(Map<String, dynamic> result) {
-    return Note(
+  Item toNote(Map<String, dynamic> result) {
+    return Item(
       result['id'],
       result['title'],
       result['content'],
@@ -78,14 +75,14 @@ class Services extends InheritedWidget {
   final AuthService authService;
   final NotesService notesService;
 
-  Services._({
+  const Services._({
     required this.authService,
     required this.notesService,
     required Widget child,
   }) : super(child: child);
 
   factory Services({required Widget child}) {
-    final client = SupabaseClient(supabaseUrl, supabaseApiKey);
+    final client = SupabaseClient(SUPABASE_URL, SUPABASE_API_KEY);
     final authService = AuthService(client.auth);
     final notesService = NotesService(client);
     return Services._(
