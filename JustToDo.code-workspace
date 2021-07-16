@@ -5,6 +5,9 @@
 		},
 		{
 			"path": ".github\\workflows"
+		},
+		{
+			"path": "app"
 		}
 	],
 	"settings": {
