@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'services.dart';
 
+import './models/note.dart';
+
 void main() => runApp(const App());
 
 class App extends StatelessWidget {
@@ -119,48 +121,204 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class NotesPage extends StatelessWidget {
+class NotesPage extends StatefulWidget {
   const NotesPage();
 
-  Future<void> _signOut(BuildContext context) async {
+  @override
+  _NotesPageState createState() => _NotesPageState();
+}
+
+class _NotesPageState extends State<NotesPage> {
+  Future<void> _signOut() async {
     final success = await Services.of(context).authService.signOut();
     if (success) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => const HomePage(
-                    title: 'Home',
-                  )));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (_) => const HomePage(title: 'Just')));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('There was an issue logging out.')));
     }
   }
 
+  Future<void> _addNote() async {
+    final note = await Navigator.push<Note?>(
+      context,
+      MaterialPageRoute(builder: (context) => NotePage()),
+    );
+    if (note != null) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _editNote(Note note) async {
+    final updatedNote = await Navigator.push<Note?>(
+      context,
+      MaterialPageRoute(builder: (context) => NotePage(note: note)),
+    );
+    if (updatedNote != null) {
+      setState(() {});
+    }
+  }
+
+  Widget _toNoteWidget(Note note) {
+    return Dismissible(
+      key: ValueKey(note.id),
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (_) =>
+          Services.of(context).notesService.deleteNote(note.id),
+      onDismissed: (_) => setState(() {}),
+      background: Container(
+        padding: const EdgeInsets.all(16.0),
+        color: Theme.of(context).errorColor,
+        alignment: Alignment.centerRight,
+        child: Icon(Icons.delete),
+      ),
+      child: ListTile(
+        title: Text(note.title),
+        subtitle: Text(note.content ?? ''),
+        onTap: () => _editNote(note),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Just'),
+        title: const Text('Just'),
+        actions: [_logOutButton(context)],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Your notes will show up here.'),
-            ),
-            ElevatedButton.icon(
-              onPressed: () async {
-                await _signOut(context);
-              },
-              icon: Icon(Icons.login),
-              label: Text('Sign out'),
-            ),
-          ],
-        ),
+      body: ListView(
+        children: [
+          FutureBuilder<List<Note>>(
+            future: Services.of(context).notesService.getNotes(),
+            builder: (context, snapshot) {
+              final notes = (snapshot.data ?? [])
+                ..sort((x, y) =>
+                    y.modifyTime.difference(x.modifyTime).inMilliseconds);
+              return Column(
+                children: notes.map(_toNoteWidget).toList(),
+              );
+            },
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text('Add note'),
+        icon: const Icon(Icons.add),
+        onPressed: _addNote,
       ),
     );
+  }
+
+  Widget _logOutButton(BuildContext context) {
+    return IconButton(
+      onPressed: _signOut,
+      icon: const Icon(Icons.logout),
+    );
+  }
+}
+
+class NotePage extends StatefulWidget {
+  final Note? note;
+
+  const NotePage({this.note});
+
+  @override
+  _NotePageState createState() => _NotePageState();
+}
+
+class _NotePageState extends State<NotePage> {
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+
+  Future<void> _saveNote_() async {
+    if (_titleController.text.isEmpty) {
+      _showSnackBar('Title cannot be empty.');
+    }
+    final note = await Services.of(context)
+        .notesService
+        .createNote(_titleController.text, _contentController.text);
+    if (note != null) {
+      Navigator.pop(context, note);
+    } else {
+      _showSnackBar('Something went wrong.');
+    }
+  }
+
+  void _showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.note != null ? 'Edit note' : 'New note'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _titleController,
+              decoration: InputDecoration(hintText: 'Title'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _contentController,
+              decoration: InputDecoration(hintText: 'Content'),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _saveNote,
+        icon: Icon(Icons.save),
+        label: Text('Save'),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _contentController.text = widget.note!.content ?? '';
+    }
+  }
+
+  Future<void> _saveNote() async {
+    final title = _titleController.text;
+    final content = _contentController.text;
+    if (title.isEmpty) {
+      _showSnackBar('Title cannot be empty.');
+      return;
+    }
+    final note = await _createOrUpdateNote(title, content);
+    if (note != null) {
+      Navigator.pop(context, note);
+    } else {
+      _showSnackBar('Something went wrong.');
+    }
+  }
+
+  Future<Note?> _createOrUpdateNote(String title, String content) {
+    final notesService = Services.of(context).notesService;
+    if (widget.note != null) {
+      return notesService.updateNote(widget.note!.id, title, content);
+    } else {
+      return notesService.createNote(title, content);
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
   }
 }
