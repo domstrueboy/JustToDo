@@ -13,9 +13,11 @@ class ItemsService {
   ItemsService(this._client);
 
   Future<List<Item>> getItems() async {
+    final userId = _client.auth.currentUser?.id;
     final response = await _client
         .from(items)
         .select('id, title, content, create_time, modify_time')
+        .eq('user_id', userId)
         .execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
