@@ -23,7 +23,7 @@ class App extends StatelessWidget {
               builder: (context, snapshot) {
                 final sessionRecovered = snapshot.data ?? false;
                 return sessionRecovered
-                    ? const NotesPage()
+                    ? const ItemsPage()
                     : const HomePage(title: 'Just');
               },
             );
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _handleResponse(bool success) async {
     if (success) {
       await Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const NotesPage()));
+          context, MaterialPageRoute(builder: (_) => const ItemsPage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -126,14 +126,14 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class NotesPage extends StatefulWidget {
-  const NotesPage();
+class ItemsPage extends StatefulWidget {
+  const ItemsPage();
 
   @override
-  _NotesPageState createState() => _NotesPageState();
+  _ItemsPageState createState() => _ItemsPageState();
 }
 
-class _NotesPageState extends State<NotesPage> {
+class _ItemsPageState extends State<ItemsPage> {
   Future<void> _signOut() async {
     final success = await Services.of(context).authService.signOut();
     if (success) {
@@ -145,32 +145,32 @@ class _NotesPageState extends State<NotesPage> {
     }
   }
 
-  Future<void> _addNote() async {
-    final note = await Navigator.push<Item?>(
+  Future<void> _addItem() async {
+    final item = await Navigator.push<Item?>(
       context,
-      MaterialPageRoute(builder: (context) => const NotePage()),
+      MaterialPageRoute(builder: (context) => const ItemPage()),
     );
-    if (note != null) {
+    if (item != null) {
       setState(() {});
     }
   }
 
-  Future<void> _editNote(Item note) async {
-    final updatedNote = await Navigator.push<Item?>(
+  Future<void> _editItem(Item item) async {
+    final updatedItem = await Navigator.push<Item?>(
       context,
-      MaterialPageRoute(builder: (context) => NotePage(note: note)),
+      MaterialPageRoute(builder: (context) => ItemPage(item: item)),
     );
-    if (updatedNote != null) {
+    if (updatedItem != null) {
       setState(() {});
     }
   }
 
-  Widget _toNoteWidget(Item note) {
+  Widget _toItemWidget(Item item) {
     return Dismissible(
-      key: ValueKey(note.id),
+      key: ValueKey(item.id),
       direction: DismissDirection.endToStart,
       confirmDismiss: (_) =>
-          Services.of(context).notesService.deleteNote(note.id),
+          Services.of(context).itemsService.deleteItem(item.id),
       onDismissed: (_) => setState(() {}),
       background: Container(
         padding: const EdgeInsets.all(16.0),
@@ -179,9 +179,9 @@ class _NotesPageState extends State<NotesPage> {
         child: const Icon(Icons.delete),
       ),
       child: ListTile(
-        title: Text(note.title),
-        subtitle: Text(note.content ?? ''),
-        onTap: () => _editNote(note),
+        title: Text(item.title),
+        subtitle: Text(item.content ?? ''),
+        onTap: () => _editItem(item),
       ),
     );
   }
@@ -196,22 +196,22 @@ class _NotesPageState extends State<NotesPage> {
       body: ListView(
         children: [
           FutureBuilder<List<Item>>(
-            future: Services.of(context).notesService.getNotes(),
+            future: Services.of(context).itemsService.getItems(),
             builder: (context, snapshot) {
-              final notes = (snapshot.data ?? [])
+              final items = (snapshot.data ?? [])
                 ..sort((x, y) =>
                     y.modifyTime.difference(x.modifyTime).inMilliseconds);
               return Column(
-                children: notes.map(_toNoteWidget).toList(),
+                children: items.map(_toItemWidget).toList(),
               );
             },
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Add note'),
+        label: const Text('Add event'),
         icon: const Icon(Icons.add),
-        onPressed: _addNote,
+        onPressed: _addItem,
       ),
     );
   }
@@ -224,16 +224,16 @@ class _NotesPageState extends State<NotesPage> {
   }
 }
 
-class NotePage extends StatefulWidget {
-  final Item? note;
+class ItemPage extends StatefulWidget {
+  final Item? item;
 
-  const NotePage({this.note});
+  const ItemPage({this.item});
 
   @override
-  _NotePageState createState() => _NotePageState();
+  _ItemPageState createState() => _ItemPageState();
 }
 
-class _NotePageState extends State<NotePage> {
+class _ItemPageState extends State<ItemPage> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
 
@@ -245,7 +245,7 @@ class _NotePageState extends State<NotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.note != null ? 'Edit note' : 'New note'),
+        title: Text(widget.item != null ? 'Edit event' : 'New event'),
       ),
       body: Column(
         children: <Widget>[
@@ -266,7 +266,7 @@ class _NotePageState extends State<NotePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _saveNote,
+        onPressed: _saveItem,
         icon: const Icon(Icons.save),
         label: const Text('Save'),
       ),
@@ -276,33 +276,33 @@ class _NotePageState extends State<NotePage> {
   @override
   void initState() {
     super.initState();
-    if (widget.note != null) {
-      _titleController.text = widget.note!.title;
-      _contentController.text = widget.note!.content ?? '';
+    if (widget.item != null) {
+      _titleController.text = widget.item!.title;
+      _contentController.text = widget.item!.content ?? '';
     }
   }
 
-  Future<void> _saveNote() async {
+  Future<void> _saveItem() async {
     final title = _titleController.text;
     final content = _contentController.text;
     if (title.isEmpty) {
       _showSnackBar('Title cannot be empty.');
       return;
     }
-    final note = await _createOrUpdateNote(title, content);
-    if (note != null) {
-      Navigator.pop(context, note);
+    final item = await _createOrUpdateItem(title, content);
+    if (item != null) {
+      Navigator.pop(context, item);
     } else {
       _showSnackBar('Something went wrong.');
     }
   }
 
-  Future<Item?> _createOrUpdateNote(String title, String content) {
-    final notesService = Services.of(context).notesService;
-    if (widget.note != null) {
-      return notesService.updateNote(widget.note!.id, title, content);
+  Future<Item?> _createOrUpdateItem(String title, String content) {
+    final itemsService = Services.of(context).itemsService;
+    if (widget.item != null) {
+      return itemsService.updateItem(widget.item!.id, title, content);
     } else {
-      return notesService.createNote(title, content);
+      return itemsService.createItem(title, content);
     }
   }
 
