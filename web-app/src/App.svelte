@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { router } from './router'
+
+	console.log(router);
+
 	export let name: string;
 </script>
 
