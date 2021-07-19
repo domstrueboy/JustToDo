@@ -1,11 +1,11 @@
-import { createRouter } from "nanostores";
+import { createRouter } from 'nanostores';
 
 interface Routes {
 	home: void;
-	events: "userId";
+  events: 'userId';
 }
 
 export const router = createRouter<Routes>({
-	home: "/",
-	events: "/:userId",
+	home: '/',
+  events: '/:userId',
 });

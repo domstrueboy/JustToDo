@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { router } from './router'
-
-	console.log(router);
+	import { router } from './router';
 
 	export let name: string;
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
+	<h1>Hello {$router?.params['userId']}!</h1>
 </main>
 
 <style>

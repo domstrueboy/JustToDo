@@ -40,7 +40,7 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
-		replace({ 'process.env.NODE_ENV': JSON.stringify( 'production' ) }),
+		replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
 		svelte({
 			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {
@@ -77,7 +77,7 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser(),
 	],
 	watch: {
 		clearScreen: false
