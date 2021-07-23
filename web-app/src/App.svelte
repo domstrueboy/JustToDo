@@ -3,12 +3,13 @@
 	import { client } from './client';
 
 	async function getItems() { // rewrite to subscribe (in stores)
-		let { data: items, error } = await client.from('items').select('title, content').eq('user_id', $router?.params['userId'] ?? '');
+		const response = await client.from('items').select('title, content').eq('user_id', $router?.params['userId'] ?? '');
+		let { status, data: items, error } = response;
 
-		if (items) {
+		if (status < 400) {
 			return items;
 		} else {
-			throw new Error(`${error}`);
+			throw new Error(error.message);
 		}
 	}
 
@@ -28,8 +29,8 @@
 				<p>{item.content}</p>
 			</li>
 		{/each}
-	{:catch error}
-		<p style="color: red">{error.message}</p>
+	{:catch errorMessge}
+		<p style="color: red">{errorMessge}</p>
 	{/await}
 </main>
 
