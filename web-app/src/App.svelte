@@ -14,21 +14,20 @@
 	}
 
 	let promise = getItems();
-
-	export let name: string;
 </script>
 
 <main>
-	<h1>Hello {$router?.params['userId']}!</h1>
 	{#await promise}
 		<p>...waiting</p>
 	{:then items}
-		{#each items as item}
-			<li>
-				<h3>{item.title}</h3>
-				<p>{item.content}</p>
-			</li>
-		{/each}
+		<ul>
+			{#each items as item}
+				<li>
+					<h3>{item.title}</h3>
+					<p>{item.content}</p>
+				</li>
+			{/each}
+		</ul>
 	{:catch errorMessge}
 		<p style="color: red">{errorMessge}</p>
 	{/await}
