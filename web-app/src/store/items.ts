@@ -9,7 +9,14 @@ export const items = createStore<Item[]>(() => {
   const itemsSubscription = client
     .from('items')
     .on('*', payload => {
-      console.log('Change received!', payload)
+      const { eventType, new: newItem } = payload;
+      switch (eventType) {
+        case 'INSERT':
+          addItem(newItem);
+          break;
+        default:
+          console.log('Change received!', payload);
+      }
     })
     .subscribe();
   return () => {
