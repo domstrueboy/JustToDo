@@ -1,9 +1,5 @@
 import { createRouter } from 'nanostores';
-
-interface Routes {
-	home: void;
-  events: 'userId';
-}
+import type { Routes } from './models/routes';
 
 export const router = createRouter<Routes>({
 	home: '/',

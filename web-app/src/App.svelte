@@ -1,36 +1,22 @@
 <script lang="ts">
+	import { items, getItems } from './store/items';
 	import { router } from './router';
-	import { client } from './client';
 
-	async function getItems() { // rewrite to subscribe (in stores)
-		const response = await client.from('items').select('title, content').eq('user_id', $router?.params['userId'] ?? '');
-		let { status, data: items, error } = response;
-
-		if (status < 400) {
-			return items;
-		} else {
-			throw new Error(error.message);
-		}
-	}
-
-	let promise = getItems();
+	let userId = $router?.params['userId'] ?? '';
+	$: getItems(userId);
 </script>
 
 <main>
-	{#await promise}
-		<p>...waiting</p>
-	{:then items}
+	<h3>Hey</h3>
+		<p>{userId}</p>
 		<ul>
-			{#each items as item}
+			{#each $items as item}
 				<li>
 					<h3>{item.title}</h3>
 					<p>{item.content}</p>
 				</li>
 			{/each}
 		</ul>
-	{:catch errorMessge}
-		<p style="color: red">{errorMessge}</p>
-	{/await}
 </main>
 
 <style>
