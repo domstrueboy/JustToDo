@@ -9,11 +9,14 @@ export const items = createStore<IItem[]>(() => {
   const itemsSubscription = client
     .from('items')
     .on('*', payload => {
-      const { eventType, new: newItem } = payload;
+      const { eventType, new: newItem, old: oldItem } = payload;
       switch (eventType) {
         case 'INSERT':
-          addItem(newItem);
-          break;
+          insertItem(newItem); break;
+        case 'DELETE':
+          deleteItem(oldItem.id); break;
+        case 'UPDATE':
+          updateItem(newItem); break;
         default:
           console.log('Change received!', payload);
       }
@@ -27,7 +30,7 @@ export const items = createStore<IItem[]>(() => {
 export async function getItems(userId) {
   const response = await client
     .from('items')
-    .select('title, content')
+    .select('id, title, content')
     .eq('user_id', userId);
 
   let { status, data, error } = response;
@@ -39,6 +42,18 @@ export async function getItems(userId) {
   }
 }
 
-export function addItem(item: IItem) {
+export function insertItem(item: IItem) {
   items.set([...getValue(items), item]);
+}
+
+export function deleteItem(id: number) {
+  const newItems = getValue(items).filter(item => item.id !== id);
+  items.set(newItems);
+}
+
+export function updateItem(updatedItem: IItem) {
+  const clonedItems = [...getValue(items)];
+  const index = clonedItems.findIndex(item => item.id === updatedItem.id);
+  clonedItems[index] = updatedItem;
+  items.set(clonedItems);
 }
