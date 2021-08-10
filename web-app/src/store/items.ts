@@ -1,8 +1,8 @@
 import { createStore, getValue } from 'nanostores';
 import { client } from '../client';
-import type { Item } from '../models/item';
+import type { IItem } from '../models/item';
 
-export const items = createStore<Item[]>(() => {
+export const items = createStore<IItem[]>(() => {
   items.set([]);
 
   // subscription on future changes:
@@ -39,6 +39,6 @@ export async function getItems(userId) {
   }
 }
 
-export function addItem(item: Item) {
+export function addItem(item: IItem) {
   items.set([...getValue(items), item]);
 }
