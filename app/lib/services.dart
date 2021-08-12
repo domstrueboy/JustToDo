@@ -16,7 +16,7 @@ class ItemsService {
     final userId = _client.auth.currentUser?.id;
     final response = await _client
         .from(items)
-        .select('id, title, content, create_time, modify_time')
+        .select('id, title, description, create_time, modify_time')
         .eq('user_id', userId)
         .execute();
     if (response.error == null) {
@@ -27,10 +27,10 @@ class ItemsService {
     return [];
   }
 
-  Future<Item?> createItem(String title, String? content) async {
+  Future<Item?> createItem(String title, String? description) async {
     final response = await _client
         .from(items)
-        .insert({'title': title, 'content': content}).execute();
+        .insert({'title': title, 'description': description}).execute();
     if (response.error == null) {
       final results = response.data as List<dynamic>;
       return toItem(results[0]);
@@ -39,10 +39,14 @@ class ItemsService {
     return null;
   }
 
-  Future<Item?> updateItem(int id, String title, String? content) async {
+  Future<Item?> updateItem(int id, String title, String? description) async {
     final response = await _client
         .from(items)
-        .update({'title': title, 'content': content, 'modify_time': 'now()'})
+        .update({
+          'title': title,
+          'description': description,
+          'modify_time': 'now()'
+        })
         .eq('id', id)
         .execute();
     if (response.error == null) {
@@ -66,7 +70,7 @@ class ItemsService {
     return Item(
       result['id'],
       result['title'],
-      result['content'],
+      result['description'],
       DateTime.parse(result['create_time']),
       DateTime.parse(result['modify_time']),
     );

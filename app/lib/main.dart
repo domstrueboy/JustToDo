@@ -180,7 +180,7 @@ class _ItemsPageState extends State<ItemsPage> {
       ),
       child: ListTile(
         title: Text(item.title),
-        subtitle: Text(item.content ?? ''),
+        subtitle: Text(item.description ?? ''),
         onTap: () => _editItem(item),
       ),
     );
@@ -278,7 +278,7 @@ class _ItemPageState extends State<ItemPage> {
     super.initState();
     if (widget.item != null) {
       _titleController.text = widget.item!.title;
-      _contentController.text = widget.item!.content ?? '';
+      _contentController.text = widget.item!.description ?? '';
     }
   }
 
