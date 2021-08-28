@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'services.dart';
 import 'models/item.dart';
 
+const appTitle = 'Just';
+
 void main() => runApp(const App());
 
 class App extends StatelessWidget {
@@ -11,9 +13,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Services(
       child: MaterialApp(
-        title: 'Just',
+        title: appTitle,
         theme: ThemeData(
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
           primarySwatch: Colors.blue,
         ),
         home: Builder(
@@ -24,7 +26,7 @@ class App extends StatelessWidget {
                 final sessionRecovered = snapshot.data ?? false;
                 return sessionRecovered
                     ? const ItemsPage()
-                    : const HomePage(title: 'Just');
+                    : const HomePage(title: appTitle);
               },
             );
           },
@@ -80,7 +82,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('Just'),
+        title: const Text(appTitle),
       ),
       body: Center(
         child: Column(
@@ -138,7 +140,7 @@ class _ItemsPageState extends State<ItemsPage> {
     final success = await Services.of(context).authService.signOut();
     if (success) {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (_) => const HomePage(title: 'Just')));
+          MaterialPageRoute(builder: (_) => const HomePage(title: 'Sked')));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('There was an issue logging out.')));
