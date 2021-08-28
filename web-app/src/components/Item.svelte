@@ -5,7 +5,7 @@
 
 <li>
 	<h3>{item.title ?? 'Unknown title'}</h3>
-	<p>{item.content ?? ''}</p>
+	<p>{item.description ?? ''}</p>
 </li>
 
 <style>

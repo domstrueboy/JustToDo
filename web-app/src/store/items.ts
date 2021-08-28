@@ -30,7 +30,7 @@ export const items = createStore<IItem[]>(() => {
 export async function getItems(userId) {
   const response = await client
     .from('items')
-    .select('id, title, content')
+    .select('id, title, description')
     .eq('user_id', userId);
 
   let { status, data, error } = response;

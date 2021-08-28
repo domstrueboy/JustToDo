@@ -1,7 +1,7 @@
 export interface IItem {
   id: number;
   title: string;
-  content: string;
+  description: string;
   createTime: Date;
   modifyTime: Date;
 }
