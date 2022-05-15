@@ -1,9 +1,10 @@
-import { createStore, getValue } from 'nanostores';
+import { atom, onMount } from 'nanostores';
 import { client } from '../client';
 import type { IItem } from '../models/item';
 
-export const items = createStore<IItem[]>(() => {
-  items.set([]);
+export const items = atom<IItem[]>([]);
+
+onMount(items, () => {
 
   // subscription on future changes:
   const itemsSubscription = client
@@ -43,16 +44,16 @@ export async function getItems(userId) {
 }
 
 export function insertItem(item: IItem) {
-  items.set([...getValue(items), item]);
+  items.set([...items.get(), item]);
 }
 
 export function deleteItem(id: number) {
-  const newItems = getValue(items).filter(item => item.id !== id);
+  const newItems = items.get().filter(item => item.id !== id);
   items.set(newItems);
 }
 
 export function updateItem(updatedItem: IItem) {
-  const clonedItems = [...getValue(items)];
+  const clonedItems = [...items.get()];
   const index = clonedItems.findIndex(item => item.id === updatedItem.id);
   clonedItems[index] = updatedItem;
   items.set(clonedItems);
